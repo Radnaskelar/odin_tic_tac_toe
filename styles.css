@@ -2,15 +2,22 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  --margin-value: 1rem;
 }
 
 .title {
-  --margin-value: 1rem;
   display: flex;
   place-content: center;
+  align-self: center;
   margin: var(--margin-value);
-  font-size: 2.5rem;
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: 2rem;
+}
+
+.title span {
+  background-color: rgba(87, 107, 87, 0.15);
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
 }
 
 #game-board-wrapper {
@@ -20,10 +27,23 @@
   height: 80dvh;
 }
 
+.controller {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  width: 50dvh;
+  margin-bottom: var(--margin-value);
+}
+
+.controller button {
+  font-size: 1.5rem;
+  padding: 0.2em;
+}
+
 .game-board {
   display: grid;
-  grid-template-columns: repeat(3, 30%);
-  grid-template-rows: repeat(3, 30%);
+  grid-template-columns: repeat(3, calc(50dvh / 3));
+  grid-template-rows: repeat(3, calc(50dvh / 3));
   height: 50dvh;
   width: 50dvh;
 }
