@@ -20,24 +20,17 @@
   padding: 0.5rem 1rem;
 }
 
+p {
+  padding-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
 #game-board-wrapper {
   display: flex;
   flex-direction: column;
   place-items: center;
   height: 80dvh;
-}
-
-.controller {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  width: 50dvh;
-  margin-bottom: var(--margin-value);
-}
-
-.controller button {
-  font-size: 1.5rem;
-  padding: 0.2em;
 }
 
 .game-board {
@@ -46,9 +39,20 @@
   grid-template-rows: repeat(3, calc(50dvh / 3));
   height: 50dvh;
   width: 50dvh;
+  background-color: rgba(87, 107, 87, 0.15);
 }
 
 .game-board button {
   border: 1px solid;
   font-size: 4rem;
+}
+
+#restartButton {
+  margin: 1rem;
+  font-size: 1.5rem;
+  background-color: rgba(87, 107, 87, 0.15);
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  z-index: 0;
+  border: none;
 }
