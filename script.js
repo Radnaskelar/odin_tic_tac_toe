@@ -115,9 +115,7 @@ const showUI = (() => {
   const restartButton = document.querySelector("#restartButton");
 
   const currentPlayer = game.getCurrentPlayerName();
-  const currentPlayerMark = game.getCurrentPlayerMark();
 
-  console.log("showUI");
   let board = game.getBoard();
   board.forEach((cell, index) => {
     const cellBtn = document.createElement("button");
