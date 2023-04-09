@@ -2,15 +2,17 @@
 /* eslint-disable no-plusplus */
 
 const Gameboard = () => {
-  const board = new Array(9).fill(""); // board state
+  const board = Array(9).fill("");
 
-  const resetBoard = () => new Array(9).fill("");
+  const resetBoard = () => board.fill("");
 
   const setCell = (index, mark) => {
     board[index] = mark;
+    console.log(board);
   };
 
   const checkForWin = (mark) => {
+    console.log("mark", mark);
     const winConditions = [
       [0, 1, 2],
       [3, 4, 5],
@@ -22,12 +24,16 @@ const Gameboard = () => {
       [2, 4, 6],
     ];
 
+    // return [0, 1, 2].every((index) => board[index] === mark);
+
     const win = winConditions.find((winCondition) =>
       winCondition.every((index) => board[index] === mark)
     );
-    if (win === null) return false;
+    if (win === undefined) {
+      return false;
+    }
     return true;
-  }; // not working
+  };
 
   const getBoard = () => [...board];
 
@@ -49,17 +55,17 @@ const Player = (mark, name) => {
   };
 };
 
-const Cell = () => {
-  let value = 0;
-  const addMark = (mark) => {
-    value = mark;
-  };
-  const getValue = () => value;
-  return {
-    addMark,
-    getValue,
-  };
-};
+// const Cell = () => {
+//   let value = 0;
+//   const addMark = (mark) => {
+//     value = mark;
+//   };
+//   const getValue = () => value;
+//   return {
+//     addMark,
+//     getValue,
+//   };
+// };
 
 const Game = () => {
   const board = Gameboard();
@@ -76,21 +82,25 @@ const Game = () => {
     }
   };
 
-  const playRound = (clickedCell) => {
+  const playRound = (clickedCellIndex) => {
     console.log(`It is ${currentPlayer.getName()}'s turn.`);
-    board.setCell(clickedCell, currentPlayer.getMark()); // not working
+    board.setCell(clickedCellIndex, currentPlayer.getMark()); // not working
     console.log(currentPlayer.getMark());
-    board.checkForWin(currentPlayer.getMark());
-    console.log(board.checkForWin());
+    const foo = board.checkForWin(currentPlayer.getMark());
+    console.log(foo);
+    console.log(board.getBoard());
     // check for tie
     switchPlayer();
+    // board.resetBoard(); reset if win or tie
   };
 
   const getCurrentPlayerName = () => currentPlayer.getName();
+  const getCurrentPlayerMark = () => currentPlayer.getMark();
 
   return {
     switchPlayer,
     playRound,
+    getCurrentPlayerMark,
     getCurrentPlayerName,
     setCell: board.setCell,
     getBoard: board.getBoard,
@@ -104,8 +114,11 @@ const showUI = (() => {
   let playerTurnDiv = document.querySelector("p");
   const restartButton = document.querySelector("#restartButton");
 
-  let currentPlayer = game.getCurrentPlayerName();
-  const board = game.getBoard(); // not working
+  const currentPlayer = game.getCurrentPlayerName();
+  const currentPlayerMark = game.getCurrentPlayerMark();
+
+  console.log("showUI");
+  let board = game.getBoard();
   board.forEach((cell, index) => {
     const cellBtn = document.createElement("button");
     cellBtn.classList.add("cell");
@@ -114,10 +127,17 @@ const showUI = (() => {
   });
 
   const clickHandlerBoard = (e) => {
-    const clickedCell = e.target.dataset.cell;
-    if (!clickedCell) return;
+    const clickedCellIndex = e.target.dataset.cell;
+    console.log(clickedCellIndex);
 
-    game.playRound(clickedCell);
+    // document.querySelector(`[data-cell='${clickedCellIndex}']`).textContent =
+    //   game.getCurrentPlayerMark();
+    updateScreen(clickedCellIndex);
+    // debugger;
+
+    game.playRound(clickedCellIndex);
+
+    // updateScreen();
   };
 
   const cells = Array.from(boardDiv.children);
@@ -125,19 +145,18 @@ const showUI = (() => {
     cell.addEventListener("click", clickHandlerBoard);
   });
 
-  const displayPlayer = () => {
-    playerTurnDiv.textContent = `${currentPlayer}'s turn!`;
-  };
-
-  const resetScreen = () => {
-    // clear the board on screen
-    boardDiv.textContent = "";
+  const updateScreen = (clickedCellIndex) => {
+    // boardDiv.textContent = "";
+    document.querySelector(`[data-cell='${clickedCellIndex}']`).textContent =
+      game.getCurrentPlayerMark();
+    playerTurnDiv.textContent = `${game.getCurrentPlayerMark()}'s turn!`;
   };
 
   return {
-    displayPlayer,
-    resetScreen,
+    game,
+    board,
+    clickHandlerBoard,
+    currentPlayer,
+    updateScreen,
   };
 })();
-
-showUI.displayPlayer();
